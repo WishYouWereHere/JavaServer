@@ -1,17 +1,20 @@
 /***** import java server libs *****/
+import java.net.Inet4Address;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 /***********************************/
+
+/***** import socket libs *********/
 import java.io.BufferedReader;
-/***** import logging libs *********/
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+/***********************************/
+
+/***** import logging libs *********/
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
-
-import javafx.concurrent.Task;
-
 import java.util.logging.Level;
 /***********************************/
 
@@ -26,8 +29,14 @@ public class Server {
     public static void main(String[] args) throws InterruptedException {
         ThreadPoolExecutor executor = (ThreadPoolExecutor)Executors.newCachedThreadPool();
         Logger logger = log();
-        logger.info("start logging");
-        System.out.println("attempt to start server");
+        logger.info("Start logging");
+        System.out.println("Attempt to start server");
+        try{
+            System.out.println(Inet4Address.getLocalHost().getHostAddress());
+        }catch (UnknownHostException e){
+            System.out.println("Can't get IP address");
+        }
+
         try{
             ServerSocket aesServerSocket = new ServerSocket(8000);
             //Socket clientSocket = aesServerSocket.accept();
@@ -104,7 +113,7 @@ public class Server {
     } 
     
     public static Logger log(){
-        Logger logger = Logger.getLogger(aesServer.class.getName());
+        Logger logger = Logger.getLogger(Server.class.getName());
         logger.setLevel(Level.FINE);
         String FileDir = System.getProperty("user.dir");
         try{
